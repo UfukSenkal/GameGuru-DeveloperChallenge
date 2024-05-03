@@ -615,7 +615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 999747929}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: temp parent grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -671,11 +671,11 @@ RectTransform:
   m_Father: {fileID: 52764428}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -175}
-  m_SizeDelta: {x: 167.15, y: 31.341}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 273}
+  m_SizeDelta: {x: 167.15, y: 31.341003}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1742623744
 MonoBehaviour:
   m_ObjectHideFlags: 0
