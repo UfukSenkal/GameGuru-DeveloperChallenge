@@ -10,9 +10,9 @@ namespace GameGuru.SecondCase.Platform
     public class PlatformManager : MonoBehaviour
     {
         [SerializeField] private Pool<PlatformController> platformPool;
-        [SerializeField] private PlatformController[] predefinedItems;
         [SerializeField] private PlayerController player;
         [SerializeField] private LevelConstructor levelConstructor;
+        [SerializeField] private Vector2 xSpawnPoints;
 
         private List<PlatformController> _spawnedPlatforms;
         private PlatformController _currentPlatform;
@@ -41,10 +41,13 @@ namespace GameGuru.SecondCase.Platform
         public void SpawnMovingPlatform()
         {
             var spawnPos = LastSnappedPlatform.transform.position + Vector3.forward * LastSnappedPlatform.Size.z;
-            spawnPos.x -= 1.5f;
+            var direction = UnityEngine.Random.Range(0, 2);
+            bool isGoingRight = direction == 0;
+            Debug.Log("direction : " + direction);
+            spawnPos.x += isGoingRight ? xSpawnPoints.x : xSpawnPoints.y;
 
             PlatformController platform = SpawnPlatform(spawnPos);
-            platform.Initiliaze();
+            platform.Initiliaze(isGoingRight);
             platform.transform.localScale = LastSnappedPlatform.transform.localScale;
             platform.ID = _spawnedPlatforms.Count;
 
@@ -184,37 +187,7 @@ namespace GameGuru.SecondCase.Platform
             }
             return;
 
-            for (int i = 1; i < predefinedItems.Length; i++)
-            {
-                var currentPlatform = predefinedItems[i - 1];
-                var nextPlatform = predefinedItems[i];
-
-                var spawnPos = currentPlatform.transform.position + Vector3.forward * currentPlatform.Size.z;
-                nextPlatform.transform.position = spawnPos;
-
-            }
         }
-
-        public void FindPredefinedPlatforms()
-        {
-            if (platformPool.Parent == null)
-            {
-                Debug.LogError("Parent is null");
-                return;
-            }
-            var childCount = platformPool.Parent.GetChild(0).childCount;
-            predefinedItems = new PlatformController[childCount];
-
-            for (int i = 0; i < childCount; i++)
-            {
-                var platform = platformPool.Parent.GetChild(0).GetChild(i).GetComponent<PlatformController>();
-                if (platform != null)
-                {
-                    predefinedItems[i] = platform;
-                }
-            }
-        }
-
 
         #endregion
 

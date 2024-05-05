@@ -11,8 +11,10 @@ namespace GameGuru.SecondCase.Platform
     {
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private float platformSideSpeed;
-        [SerializeField] private float endXValue;
+        [SerializeField] private Vector2 endXValues;
 
+
+        private float _endXValue;
 
         public int ID { get; set; }
         public Vector3 MiddleCenter => meshRenderer.bounds.center;
@@ -22,21 +24,22 @@ namespace GameGuru.SecondCase.Platform
         public Action<PlatformController> onSnapped;
 
 
-        public void Initiliaze()
+        public void Initiliaze(bool isGoingRight)
         {
+            _endXValue = isGoingRight ? endXValues.y : endXValues.x;
             Move();
         }
 
 
         public void Move()
         {
-            transform.DOMoveX(endXValue, 1, false).SetLoops(-1,LoopType.Yoyo);
+            transform.DOMoveX(_endXValue, 1, false).SetLoops(-1,LoopType.Yoyo);
         }
 
         public void Snap()
         {
             Debug.Log("Snap");
-            DOTween.KillAll();
+            transform.DOKill(false);
             onSnapped?.Invoke(this);
         }
         public void Cut(PlatformController lastPlatform,out bool isGameOver)
@@ -44,8 +47,10 @@ namespace GameGuru.SecondCase.Platform
             float overPiece = transform.position.x - lastPlatform.transform.position.x;
             float direction = overPiece > 0 ? 1f : -1f;
 
-            float newXSize = lastPlatform.transform.localScale.x - Mathf.Abs(overPiece);
-            float fallingPlatformSize = transform.localScale.x - newXSize;
+            var tr = meshRenderer.transform;
+
+            float newXSize = lastPlatform.Size.x - Mathf.Abs(overPiece);
+            float fallingPlatformSize = tr.localScale.x - newXSize;
 
             isGameOver = newXSize <= 0;
             if (isGameOver)
@@ -59,10 +64,10 @@ namespace GameGuru.SecondCase.Platform
             }
 
             float newXPosition = lastPlatform.transform.position.x + (overPiece / 2f);
-            transform.localScale = new Vector3(newXSize, transform.localScale.y, transform.localScale.z);
-            transform.position = new Vector3(newXPosition, transform.position.y, transform.position.z);
+            tr.localScale = new Vector3(newXSize, tr.localScale.y, tr.localScale.z);
+            tr.position = new Vector3(newXPosition, tr.position.y, tr.position.z);
 
-            float platformEdge = transform.position.x + (newXSize / 2f * direction);
+            float platformEdge = tr.position.x + (newXSize / 2f * direction);
             float fallingPlatformXPosition = platformEdge + fallingPlatformSize / 2f * direction;
 
 

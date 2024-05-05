@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 3398415232040106639}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!1 &2937095488382713977
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,4 +160,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 3398415232040106639}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: -2.5, y: 1.5}

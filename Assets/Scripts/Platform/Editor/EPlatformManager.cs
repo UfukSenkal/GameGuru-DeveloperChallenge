@@ -18,10 +18,6 @@ namespace GameGuru.SecondCase.Platform
             {
                 platformManager.RepositionPredefinedPlatforms();
             }
-            if (GUILayout.Button("Find Predefined Platforms"))
-            {
-                platformManager.FindPredefinedPlatforms();
-            }
         }
     }
 }

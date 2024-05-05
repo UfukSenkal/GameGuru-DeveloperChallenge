@@ -994,6 +994,7 @@ MonoBehaviour:
   player: {fileID: 5062883109654775315}
   levelConstructor:
     levelData: {fileID: 11400000, guid: 3ccb646da114e824895302a2f3dbfae1, type: 2}
+  xSpawnPoints: {x: -1.5, y: 0.75}
 --- !u!1 &997345921
 GameObject:
   m_ObjectHideFlags: 0
