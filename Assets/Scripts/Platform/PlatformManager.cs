@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameGuru.Controls;
 using GameGuru.SecondCase.Character;
+using GameGuru.Helper;
 
 namespace GameGuru.SecondCase.Platform
 {
@@ -13,15 +13,18 @@ namespace GameGuru.SecondCase.Platform
         [SerializeField] private PlayerController player;
         [SerializeField] private LevelConstructor levelConstructor;
         [SerializeField] private Vector2 xSpawnPoints;
+        [SerializeField] private SoundEffectModule fitSoundEffect;
 
         private List<PlatformController> _spawnedPlatforms;
         private PlatformController _currentPlatform;
         private int _currentLevelSpawnCount;
+        private int _comboCount;
 
         public PlatformController LastSnappedPlatform => _spawnedPlatforms[_spawnedPlatforms.Count - 1];
 
         public void Initiliaze()
         {
+            fitSoundEffect.Initiliaze();
             _currentLevelSpawnCount = 0;
             DestroyChildren();
             platformPool.Initiliaze();
@@ -50,12 +53,30 @@ namespace GameGuru.SecondCase.Platform
             platform.Initiliaze(isGoingRight, LastSnappedPlatform.Scale);
             platform.ID = _spawnedPlatforms.Count;
             platform.transform.parent = levelConstructor.CurrentParent;
+
             platform.onSnapped -= OnPlatformSnapped;
             platform.onSnapped += OnPlatformSnapped;
+
+            platform.onPerfectFit -= OnPerfectFit;
+            platform.onPerfectFit += OnPerfectFit;
 
             _currentPlatform = platform;
 
             _currentLevelSpawnCount++;
+        }
+
+        private void OnPerfectFit(bool isPerfectFit)
+        {
+            if (isPerfectFit)
+            {
+                fitSoundEffect.IncreasePitch(_comboCount);
+                fitSoundEffect.PlaySound();
+                _comboCount++;
+                return;
+            }
+
+            _comboCount = 0;
+            fitSoundEffect.Reset();
         }
 
         private PlatformController SpawnPlatform(Vector3 spawnPos)

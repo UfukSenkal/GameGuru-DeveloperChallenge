@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using GameGuru.Helper;
 
 namespace GameGuru.SecondCase.Platform
 {
@@ -23,6 +24,7 @@ namespace GameGuru.SecondCase.Platform
 
 
         public Action<PlatformController> onSnapped;
+        public Action<bool> onPerfectFit;
 
 
         public void Initiliaze(bool isGoingRight,Vector3 scale)
@@ -53,6 +55,9 @@ namespace GameGuru.SecondCase.Platform
 
             float newXSize = lastPlatform.Scale.x - Mathf.Abs(overPiece);
             float fallingPlatformSize = Scale.x - newXSize;
+
+             onPerfectFit?.Invoke(overPiece == 0); // if fit perfects
+
 
             isGameOver = newXSize <= 0;
             if (isGameOver)

@@ -1017,6 +1017,9 @@ MonoBehaviour:
   levelConstructor:
     levelData: {fileID: 11400000, guid: 3ccb646da114e824895302a2f3dbfae1, type: 2}
   xSpawnPoints: {x: -1.5, y: 0.75}
+  fitSoundEffect:
+    audioSourceRes: {fileID: 3754228353257490697, guid: 1f86e90e80824c746874f3aa5fa89708, type: 3}
+    pitchIncrease: 0.2
 --- !u!1 &997345921
 GameObject:
   m_ObjectHideFlags: 0
