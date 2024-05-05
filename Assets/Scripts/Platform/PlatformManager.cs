@@ -28,7 +28,6 @@ namespace GameGuru.SecondCase.Platform
                 platform.ID = _spawnedPlatforms.Count;
                 _spawnedPlatforms.Add(platform);
             }
-            SpawnPlatform();
         }
 
         public void SnapPlatform()
@@ -68,7 +67,13 @@ namespace GameGuru.SecondCase.Platform
 
         public void ResetAllPlatforms()
         {
+            platformPool.ResetAll();
+            Initiliaze();
+        }
 
+        public void LoadNextLevel()
+        {
+            
         }
 
         #region Inspector Methods
@@ -104,6 +109,8 @@ namespace GameGuru.SecondCase.Platform
                 }
             }
         }
+
+     
         #endregion
 
     }

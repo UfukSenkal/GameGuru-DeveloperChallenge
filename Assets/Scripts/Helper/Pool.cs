@@ -3,7 +3,7 @@ using UnityEngine;
 using Unity.Collections;
 
 [System.Serializable]
-public class Pool<T>  where T : MonoBehaviour
+public class Pool<T> where T : MonoBehaviour
 {
 
     [SerializeField] private T prefab;
@@ -49,6 +49,7 @@ public class Pool<T>  where T : MonoBehaviour
         T newObj = GameObject.Instantiate(prefab);
         newObj.transform.SetParent(parent);
         Push(newObj);
+        newObj.gameObject.SetActive(true);
         return newObj;
     }
 
@@ -67,10 +68,8 @@ public class Pool<T>  where T : MonoBehaviour
         while (en.MoveNext())
         {
             var c = en.Current;
-            if (!c.gameObject.activeInHierarchy)
-            {
-                c.gameObject.SetActive(false);
-            }
+            c.gameObject.SetActive(false);
+
         }
 
         en.Dispose();
@@ -81,7 +80,7 @@ public class Pool<T>  where T : MonoBehaviour
     {
         foreach (var obj in _pool)
         {
-           GameObject.Destroy(obj.gameObject);
+            GameObject.Destroy(obj.gameObject);
         }
         _pool.Clear();
     }

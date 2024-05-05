@@ -1,4 +1,5 @@
 using GameGuru.FirstCase.Grid;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,29 +27,49 @@ namespace GameGuru.SecondCase.Character
 
         private float _centerXPos;
         private Vector3 _startPosition;
-        private bool _isGameOver = false;
+        private bool _canMove;
+
+        public Action onCharacterDead;
 
         public const string RUN_ANIM_NAME = "Run";
+        public const string IDLE_ANIM_NAME = "Idle";
         public const string DANCE_ANIM_NAME = "dance";
 
         private void Awake()
         {
             _startPosition = transform.position;
+            _canMove = false;
         }
 
         private void Update()
         {
-            if (_isGameOver) return;
+            if (!_canMove) return;
 
-            Move();
-            SideMove();
             Gravity();
+            Move();
 
-            if (!_isGameOver && IsFalling())
+            //is character falling
+            bool isFalling = transform.position.y < _startPosition.y;
+            if (isFalling)
             {
-                _isGameOver = true;
-                GameManager.Instance.FinishGame(false);
+                onCharacterDead?.Invoke();
+                onCharacterDead = null;
+                return;
             }
+
+            SideMove();
+
+
+        }
+        public void StartMovement()
+        {
+            PlayAnim(RUN_ANIM_NAME);
+            _canMove = true;
+        }
+        public void Dance()
+        {
+            _canMove = false;
+            PlayAnim(DANCE_ANIM_NAME);
         }
 
         public void Move()
@@ -79,10 +100,12 @@ namespace GameGuru.SecondCase.Character
 
         public void Revive()
         {
+            _canMove = false;
+            PlayAnim(IDLE_ANIM_NAME);
             characterController.enabled = false;
             transform.position = _startPosition;
+            _centerXPos = _startPosition.x;
             characterController.enabled = true;
-            _isGameOver = false;
         }
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
@@ -91,18 +114,10 @@ namespace GameGuru.SecondCase.Character
                 ///current platform
             }
         }
-        private bool IsFalling()
-        {
-            RaycastHit hit;
 
-            return Physics.Raycast(transform.position, Vector3.down * 5f, out hit);
-        }
 
     }
-    public class TriggerChecker
-    {
 
-    }
 
     public interface IMovable
     {

@@ -6,10 +6,12 @@ namespace GameGuru.SecondCase.Helper
 {
     public class FinishController : MonoBehaviour
     {
+        [SerializeField] private Collider col;
         private void OnTriggerEnter(Collider other)
         {
             if (!Character.PlayerController.TryGetPlayer(other, out var player)) return;
 
+            col.enabled = false;
             GameManager.Instance.FinishGame(true);
         }
     }

@@ -724,6 +724,8 @@ MonoBehaviour:
   platformManager: {fileID: 962333399}
   cinemachineCam: {fileID: 207030686}
   inputControl: {fileID: 281976932}
+  tapToPlay:
+    tapToPlayRes: {fileID: 1126888417700783289, guid: 1b84120222e02c54ebf867d7a430d048, type: 3}
 --- !u!4 &1117645110
 Transform:
   m_ObjectHideFlags: 0
@@ -1592,12 +1594,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 585130342517064561}
   characterController: {fileID: 5062883109654775317}
-  moveSpeed: 1
+  moveSpeed: 3
   sideSpeed: 1
   gravity: -9
   rotateAround:
-    rotationSpeed: 0
-    rotationDuration: 0
+    rotationSpeed: 3
+    rotationDuration: 1.5
 --- !u!143 &5062883109654775317
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1731,10 +1733,6 @@ PrefabInstance:
     - target: {fileID: 8822058165888743613, guid: 50d59dd24e8b8264b890d8c1d9709931, type: 3}
       propertyPath: m_Name
       value: Finish
-      objectReference: {fileID: 0}
-    - target: {fileID: 8822058165888743613, guid: 50d59dd24e8b8264b890d8c1d9709931, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50d59dd24e8b8264b890d8c1d9709931, type: 3}
