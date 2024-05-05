@@ -502,6 +502,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1409804437284690223, guid: db01acd78ef465a489cbfb4a7a0afa53, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -667.8766
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409804437284690223, guid: db01acd78ef465a489cbfb4a7a0afa53, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 333.93832
+      objectReference: {fileID: 0}
     - target: {fileID: 1409804437840380861, guid: db01acd78ef465a489cbfb4a7a0afa53, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1624,7 +1632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1793187821
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1793,16 +1801,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellModule:
     cellPool:
-      prefab: {fileID: 0}
+      prefab: {fileID: 1827224906719140576, guid: d8bfc62ea6bd4a44982b4a388d2eff43, type: 3}
       startCount: 10
       parent: {fileID: 0}
-    cellPrefab: {fileID: 1827224906719140576, guid: d8bfc62ea6bd4a44982b4a388d2eff43, type: 3}
     gridSize: 5
     cellSpacingRatio: 0.1
     paddingRatio: 0.05
     parent: {fileID: 1909827026}
   inputControl: {fileID: 242760056}
-  gridUIController: {fileID: 0}
+  gridUIController: {fileID: 52764429}
 --- !u!4 &1909827026
 Transform:
   m_ObjectHideFlags: 0
