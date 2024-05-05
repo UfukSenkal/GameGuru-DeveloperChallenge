@@ -18,8 +18,5 @@ namespace GameGuru.FirstCase.Grid
         }
     }
 
-    public interface IAnimatorOwner
-    {
-        public void PlayAnim(string animName);
-    }
+   
 }

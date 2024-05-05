@@ -47,7 +47,7 @@ namespace GameGuru.SecondCase.Character
             Gravity();
             Move();
 
-            //is character falling
+          
             bool isFalling = transform.position.y < _startPosition.y;
             if (isFalling)
             {
@@ -111,20 +111,9 @@ namespace GameGuru.SecondCase.Character
             _centerXPos = _startPosition.x;
             characterController.enabled = true;
         }
-        private void OnControllerColliderHit(ControllerColliderHit hit)
-        {
-            if (!hit.collider)
-            {
-                ///current platform
-            }
-        }
 
 
     }
 
-
-    public interface IMovable
-    {
-        public void Move();
-    }
+ 
 }

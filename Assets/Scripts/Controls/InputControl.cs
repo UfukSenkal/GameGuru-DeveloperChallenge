@@ -8,13 +8,13 @@ namespace GameGuru.Controls
     {
         [SerializeField] private LayerMask layerMask;
 
-        private bool isPressed = false;
-        private bool isDown = false;
-        private bool isUp = false;
+        private bool _isPressed = false;
+        private bool _isDown = false;
+        private bool _isUp = false;
 
-        public bool IsPressed => isPressed;
-        public bool IsDown => isDown;
-        public bool IsUp => isUp;
+        public bool IsPressed => _isPressed;
+        public bool IsDown => _isDown;
+        public bool IsUp => _isUp;
 
         public Vector2 Input => lastEventData.position;
         public Vector3 WorldPosition => GetWorldMousePosition();
@@ -23,22 +23,22 @@ namespace GameGuru.Controls
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            isPressed = true;
-            isDown = true;
+            _isPressed = true;
+            _isDown = true;
             lastEventData = eventData;
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            isPressed = false;
-            isUp = true;
+            _isPressed = false;
+            _isUp = true;
             lastEventData = null;
         }
 
         private void LateUpdate()
         {
-            isDown = false;
-            isUp = false;
+            _isDown = false;
+            _isUp = false;
         }
         private Vector3 GetWorldMousePosition()
         {

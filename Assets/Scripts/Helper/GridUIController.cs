@@ -1,3 +1,4 @@
+using GameGuru.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,10 +20,17 @@ namespace GameGuru.FirstCase.Helper
         public void SetMatchCount(int matchCount) => matchCountText.text = matchCount.ToString();
         public void SetStartGridSize(int gridSize) => gridSizeInputField.text = gridSize.ToString();
 
-        public void RebuildButtonOnClick(UnityAction onClick)
+        private void Awake()
         {
-            rebuildButton.onClick.AddListener(onClick);
+            EventBus.OnStartGridSizeSet.AddListener(SetStartGridSize);
+            EventBus.OnMatchCountChanged.AddListener(SetMatchCount);
+
+            rebuildButton.onClick.AddListener(OnRebuildButtonClicked);
         }
 
+        private void OnRebuildButtonClicked()
+        {
+            EventBus.RebuildButtonClicked(GetGridSize);
+        }
     }
 }

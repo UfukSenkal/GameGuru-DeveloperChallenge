@@ -1,4 +1,5 @@
 using GameGuru.Controls;
+using GameGuru.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,22 +13,22 @@ namespace GameGuru.FirstCase.Grid
     {
         [SerializeField] private CellModule cellModule;
         [SerializeField] private InputControl inputControl;
-        [SerializeField] private Helper.GridUIController gridUIController;
 
-        private int _matchCount;
+        private int _matchCount = 0;
 
         void Start()
         {
             cellModule.Initiliaze();
-            gridUIController.SetStartGridSize(cellModule.gridSize);
-            gridUIController.RebuildButtonOnClick(SpawnGrid);
+            EventBus.OnRebuildButtonClicked.AddListener(SpawnGrid);
+            EventBus.TriggerStartGridSizeSet(cellModule.gridSize);
+            EventBus.TriggerMatchCountChanged(_matchCount);
         }
 
-        public void SpawnGrid()
+        public void SpawnGrid(int gridSize)
         {
             _matchCount = 0;
-            gridUIController.SetMatchCount(_matchCount);
-            cellModule.Initiliaze(gridUIController.GetGridSize);
+            EventBus.TriggerMatchCountChanged(_matchCount);
+            cellModule.Initiliaze(gridSize);
         }
 
         private void Update()
@@ -57,7 +58,7 @@ namespace GameGuru.FirstCase.Grid
         private void UpdateMatchCount()
         {
             _matchCount++;
-            gridUIController.SetMatchCount(_matchCount);
+            EventBus.TriggerMatchCountChanged(_matchCount);
         }
 
 

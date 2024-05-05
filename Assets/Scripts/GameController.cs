@@ -35,6 +35,9 @@ namespace GameGuru.SecondCase
         [SerializeField] private InputControl inputControl;
         [SerializeField] private TapToPlayModule tapToPlay;
         [SerializeField] private float rotationCameraSpeed;
+        [SerializeField] private float loadNextLevelDuration = 5f;
+        [SerializeField] private float gameResetDuration = 2f;
+
 
         private bool _isRotatingCamera;
 

@@ -1803,13 +1803,12 @@ MonoBehaviour:
     cellPool:
       prefab: {fileID: 1827224906719140576, guid: d8bfc62ea6bd4a44982b4a388d2eff43, type: 3}
       startCount: 10
-      parent: {fileID: 0}
+      parent: {fileID: 1909827026}
     gridSize: 5
     cellSpacingRatio: 0.1
     paddingRatio: 0.05
     parent: {fileID: 1909827026}
   inputControl: {fileID: 242760056}
-  gridUIController: {fileID: 52764429}
 --- !u!4 &1909827026
 Transform:
   m_ObjectHideFlags: 0
