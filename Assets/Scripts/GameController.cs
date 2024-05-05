@@ -36,7 +36,6 @@ namespace GameGuru.SecondCase
         [SerializeField] private TapToPlayModule tapToPlay;
         [SerializeField] private float rotationCameraSpeed;
 
-        private bool _isGameOver;
         private bool _isRotatingCamera;
 
         private void Start()
@@ -133,4 +132,5 @@ namespace GameGuru.SecondCase
 
         
     }
+
 }

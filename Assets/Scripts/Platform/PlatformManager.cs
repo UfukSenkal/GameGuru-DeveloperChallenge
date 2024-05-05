@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameGuru.SecondCase.Character;
-using GameGuru.Helper;
+using GameGuru.SecondCase.Helper;
 
 namespace GameGuru.SecondCase.Platform
 {

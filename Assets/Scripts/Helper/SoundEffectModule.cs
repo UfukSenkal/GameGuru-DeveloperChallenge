@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace GameGuru.Helper
+namespace GameGuru.SecondCase.Helper
 {
     [System.Serializable]
     public struct SoundEffectModule
