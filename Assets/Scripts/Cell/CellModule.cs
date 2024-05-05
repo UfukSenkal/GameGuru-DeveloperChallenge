@@ -44,6 +44,9 @@ namespace GameGuru.FirstCase.Grid
         {
             gridSize = newGridSize != -1 ? newGridSize : gridSize;
 
+            //minimum 2x2 grid
+            gridSize = gridSize < 2 ? 2 : gridSize;
+
             cellPool.Initiliaze();
             FitScreen();
 
