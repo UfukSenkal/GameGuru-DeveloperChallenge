@@ -24,7 +24,6 @@ namespace GameGuru.FirstCase.Grid
     public struct CellModule
     {
         public Pool<CellController> cellPool;
-        public CellController cellPrefab;
         public int gridSize;
         public float cellSpacingRatio;
         public float paddingRatio;
@@ -41,8 +40,10 @@ namespace GameGuru.FirstCase.Grid
 
         public ref Cell this[Vector2Int index] => ref _cells[index.x, index.y];
 
-        public void Initiliaze()
+        public void Initiliaze(int newGridSize = -1)
         {
+            gridSize = newGridSize != -1 ? newGridSize : gridSize;
+
             cellPool.Initiliaze();
             FitScreen();
 

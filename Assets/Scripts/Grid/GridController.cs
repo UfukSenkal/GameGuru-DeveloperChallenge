@@ -12,15 +12,22 @@ namespace GameGuru.FirstCase.Grid
     {
         [SerializeField] private CellModule cellModule;
         [SerializeField] private InputControl inputControl;
+        [SerializeField] private Helper.GridUIController gridUIController;
+
+        private int _matchCount;
 
         void Start()
         {
             cellModule.Initiliaze();
+            gridUIController.SetStartGridSize(cellModule.gridSize);
+            gridUIController.RebuildButtonOnClick(SpawnGrid);
         }
 
         public void SpawnGrid()
         {
-            cellModule.Initiliaze();
+            _matchCount = 0;
+            gridUIController.SetMatchCount(_matchCount);
+            cellModule.Initiliaze(gridUIController.GetGridSize);
         }
 
         private void Update()
@@ -38,12 +45,20 @@ namespace GameGuru.FirstCase.Grid
             cellModule[coord].isMarked = true;
             bool isMatch = cellModule.CheckMatches(coord);
 
+            if (isMatch)
+                UpdateMatchCount();
+
             if (!isMatch)
                 cellModule[coord].cellInstance.PlayAnim(CellController.MARKED_ANIM_NAME);
 
 
         }
 
+        private void UpdateMatchCount()
+        {
+            _matchCount++;
+            gridUIController.SetMatchCount(_matchCount);
+        }
 
 
     }
