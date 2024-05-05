@@ -504,7 +504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 503811140}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!65 &503811139
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -568,6 +568,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 503811136}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &506679910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 506679911}
+  m_Layer: 0
+  m_Name: pool stacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &506679911
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506679910}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -11.406038, y: -6.3463755, z: 64.784065}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &604125041
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1068420109}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!1 &809172151
 GameObject:
   m_ObjectHideFlags: 3
@@ -931,7 +962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 503811140}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!1 &962333397
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,16 +1012,7 @@ MonoBehaviour:
   platformPool:
     prefab: {fileID: 6747839322720785665, guid: eb7133392e3c6b941ab0998d16e29de9, type: 3}
     startCount: 10
-    parent: {fileID: 962333398}
-  predefinedItems:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+    parent: {fileID: 506679911}
   player: {fileID: 5062883109654775315}
   levelConstructor:
     levelData: {fileID: 11400000, guid: 3ccb646da114e824895302a2f3dbfae1, type: 2}
@@ -1042,7 +1064,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1954523218}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!1 &1053549919
 GameObject:
   m_ObjectHideFlags: 3
@@ -1187,7 +1209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1068420109}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!65 &1068420108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1478,7 +1500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1830560971}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!1 &1697992446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,7 +1661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1830560971}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!65 &1830560970
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1786,7 +1808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1954523218}
   platformSideSpeed: 3
-  endXValue: 1
+  endXValues: {x: 0, y: 0}
 --- !u!65 &1954523217
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2142,7 +2164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 585130342517064561}
   characterController: {fileID: 5062883109654775317}
-  moveSpeed: 3
+  moveSpeed: 1.5
   sideSpeed: 1
   gravity: -9
 --- !u!143 &5062883109654775317

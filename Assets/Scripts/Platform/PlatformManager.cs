@@ -47,10 +47,9 @@ namespace GameGuru.SecondCase.Platform
             spawnPos.x += isGoingRight ? xSpawnPoints.x : xSpawnPoints.y;
 
             PlatformController platform = SpawnPlatform(spawnPos);
-            platform.Initiliaze(isGoingRight);
-            platform.transform.localScale = LastSnappedPlatform.transform.localScale;
+            platform.Initiliaze(isGoingRight, LastSnappedPlatform.Scale);
             platform.ID = _spawnedPlatforms.Count;
-
+            platform.transform.parent = levelConstructor.CurrentParent;
             platform.onSnapped -= OnPlatformSnapped;
             platform.onSnapped += OnPlatformSnapped;
 
@@ -118,9 +117,9 @@ namespace GameGuru.SecondCase.Platform
 
             public int LevelID { get; private set; }
             public Level.LevelDataSO.Level LastLevel { get; private set; }
+            public Transform CurrentParent { get; private set; }
 
             public void IncreaseLevelID() => LevelID++;
-
 
             public void Initiliaze(Transform startTr)
             {
@@ -158,6 +157,7 @@ namespace GameGuru.SecondCase.Platform
                 finishInstance.transform.position = currentFinishPos;
                 finishInstance.transform.parent = levelObject.transform;
 
+                CurrentParent = levelObject.transform;
                 _lastFinishPos = currentFinishPos;
 
             }

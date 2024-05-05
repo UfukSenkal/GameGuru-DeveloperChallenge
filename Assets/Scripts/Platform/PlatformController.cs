@@ -19,13 +19,15 @@ namespace GameGuru.SecondCase.Platform
         public int ID { get; set; }
         public Vector3 MiddleCenter => meshRenderer.bounds.center;
         public Vector3 Size => meshRenderer.bounds.size;
+        public Vector3 Scale => meshRenderer.transform.localScale;
 
 
         public Action<PlatformController> onSnapped;
 
 
-        public void Initiliaze(bool isGoingRight)
+        public void Initiliaze(bool isGoingRight,Vector3 scale)
         {
+            meshRenderer.transform.localScale = scale;
             _endXValue = isGoingRight ? endXValues.y : endXValues.x;
             Move();
         }
@@ -44,13 +46,13 @@ namespace GameGuru.SecondCase.Platform
         }
         public void Cut(PlatformController lastPlatform,out bool isGameOver)
         {
+            var meshTr = meshRenderer.transform;
+
             float overPiece = transform.position.x - lastPlatform.transform.position.x;
             float direction = overPiece > 0 ? 1f : -1f;
 
-            var tr = meshRenderer.transform;
-
-            float newXSize = lastPlatform.Size.x - Mathf.Abs(overPiece);
-            float fallingPlatformSize = tr.localScale.x - newXSize;
+            float newXSize = lastPlatform.Scale.x - Mathf.Abs(overPiece);
+            float fallingPlatformSize = Scale.x - newXSize;
 
             isGameOver = newXSize <= 0;
             if (isGameOver)
@@ -64,10 +66,10 @@ namespace GameGuru.SecondCase.Platform
             }
 
             float newXPosition = lastPlatform.transform.position.x + (overPiece / 2f);
-            tr.localScale = new Vector3(newXSize, tr.localScale.y, tr.localScale.z);
-            tr.position = new Vector3(newXPosition, tr.position.y, tr.position.z);
+            meshTr.localScale = new Vector3(newXSize, meshTr.localScale.y, meshTr.localScale.z);
+            transform.position = new Vector3(newXPosition, transform.position.y, transform.position.z);
 
-            float platformEdge = tr.position.x + (newXSize / 2f * direction);
+            float platformEdge = transform.position.x + (newXSize / 2f * direction);
             float fallingPlatformXPosition = platformEdge + fallingPlatformSize / 2f * direction;
 
 
