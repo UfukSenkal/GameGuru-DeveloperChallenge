@@ -3,48 +3,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameGuru.Controls;
-
+using GameGuru.SecondCase.Character;
 
 namespace GameGuru.SecondCase.Platform
 {
     public class PlatformManager : MonoBehaviour
     {
-        [SerializeField] private PlatformController platformRes;
+        [SerializeField] private Pool<PlatformController> platformPool;
         [SerializeField] private PlatformController[] predefinedItems;
-        [SerializeField] private Transform parent;
-        [SerializeField] private InputControl inputControl;
+        [SerializeField] private PlayerController player;
 
         private List<PlatformController> _spawnedPlatforms;
         private PlatformController _currentPlatform;
 
         public PlatformController LastSnappedPlatform => _spawnedPlatforms[_spawnedPlatforms.Count - 1];
 
-        private void Awake()
+        public void Initiliaze()
         {
+            platformPool.Initiliaze();
             _spawnedPlatforms = new List<PlatformController>();
             for (int i = 0; i < predefinedItems.Length; i++)
             {
                 var platform = predefinedItems[i];
+                platform.ID = _spawnedPlatforms.Count;
                 _spawnedPlatforms.Add(platform);
             }
             SpawnPlatform();
         }
 
-        private void Update()
+        public void SnapPlatform()
         {
-            if (inputControl.IsDown)
-            {
-                _currentPlatform.Snap();
-            }
+            _currentPlatform.Snap();
+
         }
 
         public void SpawnPlatform()
         {
             var spawnPos = LastSnappedPlatform.transform.position + Vector3.forward * LastSnappedPlatform.Size.z;
             spawnPos.x -= 1.5f;
-            var platform = Instantiate(platformRes, spawnPos, Quaternion.identity);
-            platform.transform.parent = parent;
+            var platform = platformPool.Pop();
+            platform.transform.position = spawnPos;
             platform.transform.localScale = LastSnappedPlatform.transform.localScale;
+            platform.ID = _spawnedPlatforms.Count;
             platform.Initiliaze();
 
             platform.onSnapped -= OnPlatformSnapped;
@@ -56,11 +56,20 @@ namespace GameGuru.SecondCase.Platform
 
         private void OnPlatformSnapped(PlatformController controller)
         {
-            controller.Cut(LastSnappedPlatform);
-            _spawnedPlatforms.Add(controller);
-            SpawnPlatform();
+            controller.Cut(LastSnappedPlatform, out bool isGameOver);
+
+            if (!isGameOver)
+            {
+                _spawnedPlatforms.Add(controller);
+                player.SetCenterOfPlatform(controller.MiddleCenter.x);
+                SpawnPlatform();
+            }
         }
 
+        public void ResetAllPlatforms()
+        {
+
+        }
 
         #region Inspector Methods
         public void RepositionPredefinedPlatforms()
@@ -72,23 +81,23 @@ namespace GameGuru.SecondCase.Platform
 
                 var spawnPos = currentPlatform.transform.position + Vector3.forward * currentPlatform.Size.z;
                 nextPlatform.transform.position = spawnPos;
-                
+
             }
         }
 
         public void FindPredefinedPlatforms()
         {
-            if(parent == null)
+            if (platformPool.Parent == null)
             {
                 Debug.LogError("Parent is null");
                 return;
             }
-            var childCount = parent.childCount;
+            var childCount = platformPool.Parent.childCount;
             predefinedItems = new PlatformController[childCount];
 
             for (int i = 0; i < childCount; i++)
             {
-                var platform = parent.GetChild(i).GetComponent<PlatformController>();
+                var platform = platformPool.Parent.GetChild(i).GetComponent<PlatformController>();
                 if (platform != null)
                 {
                     predefinedItems[i] = platform;

@@ -14,6 +14,7 @@ namespace GameGuru.SecondCase.Platform
         [SerializeField] private float endXValue;
 
 
+        public int ID { get; set; }
         public Vector3 MiddleCenter => meshRenderer.bounds.center;
         public Vector3 Size => meshRenderer.bounds.size;
 
@@ -38,7 +39,7 @@ namespace GameGuru.SecondCase.Platform
             DOTween.KillAll();
             onSnapped?.Invoke(this);
         }
-        public void Cut(PlatformController lastPlatform)
+        public void Cut(PlatformController lastPlatform,out bool isGameOver)
         {
             float overPiece = transform.position.x - lastPlatform.transform.position.x;
             float direction = overPiece > 0 ? 1f : -1f;
@@ -46,16 +47,24 @@ namespace GameGuru.SecondCase.Platform
             float newXSize = lastPlatform.transform.localScale.x - Mathf.Abs(overPiece);
             float fallingPlatformSize = transform.localScale.x - newXSize;
 
+            isGameOver = newXSize <= 0;
+            if (isGameOver)
+            {
+                transform.DOMoveY(-5f, 1f).OnComplete(() =>
+                {
+                    transform.DOKill();
+                    gameObject.SetActive(false);
+                });
+                return;
+            }
+
             float newXPosition = lastPlatform.transform.position.x + (overPiece / 2f);
             transform.localScale = new Vector3(newXSize, transform.localScale.y, transform.localScale.z);
             transform.position = new Vector3(newXPosition, transform.position.y, transform.position.z);
 
-            float platformEdge = transform.position.x + (newXSize / 2f);
-            float fallingPlatformXPosition = platformEdge + fallingPlatformSize / 2f;
+            float platformEdge = transform.position.x + (newXSize / 2f * direction);
+            float fallingPlatformXPosition = platformEdge + fallingPlatformSize / 2f * direction;
 
-            var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            sphere.transform.position = new Vector3(platformEdge, transform.position.y, transform.position.z);
-            sphere.transform.localScale = Vector3.one * 0.1f;
 
             SpawnFallingPlatform(fallingPlatformXPosition, fallingPlatformSize);
         }
