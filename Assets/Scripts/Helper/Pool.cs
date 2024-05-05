@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Collections;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class Pool<T> where T : MonoBehaviour
@@ -80,7 +81,13 @@ public class Pool<T> where T : MonoBehaviour
     {
         foreach (var obj in _pool)
         {
+            if (obj == null) continue;
+
+#if UNITY_EDITOR
+            GameObject.DestroyImmediate(obj.gameObject);
+#else
             GameObject.Destroy(obj.gameObject);
+#endif
         }
         _pool.Clear();
     }

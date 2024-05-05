@@ -12,7 +12,7 @@ namespace GameGuru.SecondCase.Helper
             if (!Character.PlayerController.TryGetPlayer(other, out var player)) return;
 
             col.enabled = false;
-            GameManager.Instance.FinishGame(true);
+            GameController.Instance.FinishGame(true);
         }
     }
 }

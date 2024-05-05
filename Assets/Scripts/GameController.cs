@@ -1,5 +1,6 @@
 using GameGuru.Controls;
 using GameGuru.SecondCase.Character;
+using GameGuru.SecondCase.Helper;
 using GameGuru.SecondCase.Platform;
 using System;
 using System.Collections;
@@ -9,10 +10,10 @@ using UnityEngine;
 
 namespace GameGuru.SecondCase
 {
-    public class GameManager : MonoBehaviour
+    public class GameController : MonoBehaviour
     {
         #region Singleton
-        public static GameManager Instance { get; private set; }
+        public static GameController Instance { get; private set; }
 
         private void Awake()
         {
@@ -30,11 +31,13 @@ namespace GameGuru.SecondCase
         [SerializeField] private PlayerController player;
         [SerializeField] private PlatformManager platformManager;
         [SerializeField] private Cinemachine.CinemachineVirtualCamera cinemachineCam;
+        [SerializeField] private Cinemachine.CinemachineVirtualCamera rotationCinemachineCam;
         [SerializeField] private InputControl inputControl;
         [SerializeField] private TapToPlayModule tapToPlay;
+        [SerializeField] private float rotationCameraSpeed;
 
         private bool _isGameOver;
-
+        private bool _isRotatingCamera;
 
         private void Start()
         {
@@ -57,6 +60,8 @@ namespace GameGuru.SecondCase
                 return;
             }
 
+            if (_isRotatingCamera)
+                RotateCamForWin();
 
             if (!inputControl.IsDown) return;
 
@@ -65,7 +70,7 @@ namespace GameGuru.SecondCase
 
         private void StartLevel()
         {
-            platformManager.SpawnPlatform();
+            platformManager.SpawnMovingPlatform();
             player.StartMovement();
             tapToPlay.SetActiveTapToPlay(false);
         }
@@ -74,8 +79,8 @@ namespace GameGuru.SecondCase
         {
             if (isWin)
             {
-                RemoveFollowTarget();
-                RotateCamForWin();
+                _isRotatingCamera = true;
+                rotationCinemachineCam.enabled = true;
                 player.Dance();
                 StartCoroutine(LoadNextLevel());
                 return;
@@ -86,7 +91,11 @@ namespace GameGuru.SecondCase
 
         public void RotateCamForWin()
         {
-            player.rotateAround.Rotate(Camera.main.transform, player.transform);
+            var angles = rotationCinemachineCam.transform.eulerAngles;
+            angles.y += Time.deltaTime * rotationCameraSpeed;
+            angles.y = angles.y > 360 ? 0 : angles.y;
+
+            rotationCinemachineCam.transform.eulerAngles = angles;
         }
         public void RemoveFollowTarget()
         {
@@ -112,39 +121,16 @@ namespace GameGuru.SecondCase
 
         private IEnumerator LoadNextLevel()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(5f);
 
             tapToPlay.Initiliaze();
             platformManager.LoadNextLevel();
             ResetFollowTarget();
+            _isRotatingCamera = false;
+            rotationCinemachineCam.enabled = false;
+            rotationCinemachineCam.transform.rotation = cinemachineCam.transform.rotation;
         }
 
-        [Serializable]
-        public struct TapToPlayModule
-        {
-            [SerializeField] private Transform tapToPlayRes;
-
-            private Transform _taptoPlayInstance;
-            public Transform TapToPlayInstance => _taptoPlayInstance;
-            public bool CanPlay { get; private set; }
-
-            public void Initiliaze()
-            {
-                CanPlay = false;
-                if (_taptoPlayInstance != null)
-                {
-                    _taptoPlayInstance.gameObject.SetActive(true);
-                    return;
-                }
-
-                _taptoPlayInstance = Instantiate(tapToPlayRes);
-            }
-
-            public void SetActiveTapToPlay(bool isActive)
-            {
-                _taptoPlayInstance?.gameObject.SetActive(isActive);
-                CanPlay = true;
-            }
-        }
+        
     }
 }

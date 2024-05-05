@@ -22,7 +22,6 @@ namespace GameGuru.SecondCase.Character
         [SerializeField] public float moveSpeed;
         [SerializeField] public float sideSpeed;
         [SerializeField] public float gravity;
-        [SerializeField] public RotateAround rotateAround;
 
 
         private float _centerXPos;
@@ -63,6 +62,7 @@ namespace GameGuru.SecondCase.Character
         }
         public void StartMovement()
         {
+            ResetRotation();
             PlayAnim(RUN_ANIM_NAME);
             _canMove = true;
         }
@@ -96,6 +96,10 @@ namespace GameGuru.SecondCase.Character
         public void PlayAnim(string animName)
         {
             animator.Play(animName);
+        }
+        public void ResetRotation()
+        {
+            transform.rotation = Quaternion.identity;
         }
 
         public void Revive()
