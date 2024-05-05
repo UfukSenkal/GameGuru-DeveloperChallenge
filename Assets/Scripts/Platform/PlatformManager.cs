@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameGuru.SecondCase.Character;
 using GameGuru.SecondCase.Helper;
+using GameGuru.Helper;
 
 namespace GameGuru.SecondCase.Platform
 {
@@ -14,11 +15,13 @@ namespace GameGuru.SecondCase.Platform
         [SerializeField] private LevelConstructor levelConstructor;
         [SerializeField] private Vector2 xSpawnPoints;
         [SerializeField] private SoundEffectModule fitSoundEffect;
+        [SerializeField] private Material[] stackMaterials;
 
         private List<PlatformController> _spawnedPlatforms;
         private PlatformController _currentPlatform;
         private int _currentLevelSpawnCount;
         private int _comboCount;
+        private int _lastMaterialIndex = -1;
 
         public PlatformController LastSnappedPlatform => _spawnedPlatforms[_spawnedPlatforms.Count - 1];
 
@@ -51,7 +54,6 @@ namespace GameGuru.SecondCase.Platform
 
             PlatformController platform = SpawnPlatform(spawnPos);
             platform.Initiliaze(isGoingRight, LastSnappedPlatform.Scale);
-            platform.ID = _spawnedPlatforms.Count;
             platform.transform.parent = levelConstructor.CurrentParent;
 
             platform.onSnapped -= OnPlatformSnapped;
@@ -79,11 +81,21 @@ namespace GameGuru.SecondCase.Platform
             fitSoundEffect.Reset();
         }
 
-        private PlatformController SpawnPlatform(Vector3 spawnPos)
+        public PlatformController SpawnPlatform(Vector3 spawnPos)
         {
             var platform = platformPool.Pop();
+            platform.SetMaterial(GetRandomMaterial());
             platform.transform.position = spawnPos;
             return platform;
+        }
+        private Material GetRandomMaterial()
+        {
+            var randomIndex = UnityEngine.Random.Range(0, stackMaterials.Length);
+
+            randomIndex = randomIndex == _lastMaterialIndex ? randomIndex++ : randomIndex;
+            randomIndex = randomIndex >= stackMaterials.Length ? 0 : randomIndex;
+
+            return stackMaterials[randomIndex];
         }
 
         private void OnPlatformSnapped(PlatformController controller)
@@ -129,71 +141,7 @@ namespace GameGuru.SecondCase.Platform
             }
         }
 
-        [Serializable]
-        public struct LevelConstructor
-        {
-            public Level.LevelDataSO levelData;
-
-            private Vector3 _lastFinishPos;
-
-            public int LevelID { get; private set; }
-            public Level.LevelDataSO.Level LastLevel { get; private set; }
-            public Transform CurrentParent { get; private set; }
-
-            public void IncreaseLevelID() => LevelID++;
-
-            public void Initiliaze(Transform startTr)
-            {
-                LevelID = 0;
-                _lastFinishPos = startTr.transform.position;
-            }
-
-            public void ConstructLevel(in PlatformManager platformManager, out List<PlatformController> instanceList)
-            {
-                var currentLevel = GetCurrentLevel();
-                int startPlatformCount = currentLevel.startPlatformCount;
-
-                var startPos = platformManager.transform.position + _lastFinishPos;
-                var platformSize = Vector3.forward * currentLevel.platformRes.Size.z;
-                var currentFinishPos = _lastFinishPos;
-
-                instanceList = new List<PlatformController>();
-
-                GameObject levelObject = new GameObject("Level " + LevelID.ToString());
-                levelObject.transform.parent = platformManager.transform;
-                for (int i = 0; i < startPlatformCount; i++)
-                {
-                    var spawnPos = startPos +  platformSize * i;
-                    currentFinishPos += platformSize;
-
-                    var platformInstance = platformManager.SpawnPlatform(spawnPos);
-                    platformInstance.transform.parent = levelObject.transform;
-                    instanceList.Add(platformInstance);
-
-                }
-
-                currentFinishPos += platformSize * currentLevel.platformCount;
-
-                var finishInstance = Instantiate(currentLevel.finishRes, platformManager.transform);
-                finishInstance.transform.position = currentFinishPos;
-                finishInstance.transform.parent = levelObject.transform;
-
-                CurrentParent = levelObject.transform;
-                _lastFinishPos = currentFinishPos;
-
-            }
-            public Level.LevelDataSO.Level GetCurrentLevel()
-            {
-                int levelLength = levelData.levels.Length;
-                bool isOverLevels = LevelID >= levelLength;
-                var currentLevelID = isOverLevels ? UnityEngine.Random.Range(0, levelLength) : LevelID;
-                var currentLevel = levelData.levels[currentLevelID];
-                LastLevel = currentLevel;
-
-                return currentLevel;
-            }
-
-        }
+       
 
         #region Inspector Methods
         public void RepositionPredefinedPlatforms()
@@ -204,7 +152,6 @@ namespace GameGuru.SecondCase.Platform
             {
                 levelConstructor.IncreaseLevelID();
                 levelConstructor.ConstructLevel(this,out var instanceList);
-                //_spawnedPlatforms.AddRange(instanceList);
             }
             return;
 

@@ -14,9 +14,6 @@ namespace GameGuru.SecondCase.Platform
         [SerializeField] private Vector2 endXValues;
 
 
-        private float _endXValue;
-
-        public int ID { get; set; }
         public Vector3 MiddleCenter => meshRenderer.bounds.center;
         public Vector3 Size => meshRenderer.bounds.size;
         public Vector3 Scale => meshRenderer.transform.localScale;
@@ -26,6 +23,8 @@ namespace GameGuru.SecondCase.Platform
         public Action<bool> onPerfectFit;
 
 
+        private float _endXValue;
+
         public void Initiliaze(bool isGoingRight,Vector3 scale)
         {
             meshRenderer.transform.localScale = scale;
@@ -33,6 +32,10 @@ namespace GameGuru.SecondCase.Platform
             Move();
         }
 
+        public void SetMaterial(Material mat)
+        {
+            meshRenderer.material = mat;
+        }
 
         public void Move()
         {
@@ -85,6 +88,8 @@ namespace GameGuru.SecondCase.Platform
             var fallPlatform = GameObject.CreatePrimitive(PrimitiveType.Cube);
             fallPlatform.transform.localScale = new Vector3(fallingPlatformSize, transform.localScale.y, transform.localScale.z);
             fallPlatform.transform.position = new Vector3(fallingPlatformXPosition, transform.position.y, transform.position.z);
+            var cubeMesh = fallPlatform.GetComponent<MeshRenderer>();
+            cubeMesh.material = meshRenderer.material;
             fallPlatform.transform.DOMoveY(-5f, 1f).OnComplete(() =>
             {
                 fallPlatform.transform.DOKill();
